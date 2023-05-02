@@ -44,4 +44,7 @@ public class Order {
     public void setTotalPrice(double totalPrice) {
         TotalPrice = totalPrice;
     }
+    public void setID(int id) {
+        Id = id;
+    }
 }
