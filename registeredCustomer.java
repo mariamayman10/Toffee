@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.Vector;
-public class registeredCustomer{
+public class Customer{
     protected String Email;
     protected String Password;
     protected String Address;
