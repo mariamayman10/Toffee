@@ -1,32 +1,15 @@
 public class Product {
-    private double Price;
-    private int Discount;
-    private int Id;
-    String Name;
-    String Category;
-
-    public int getDiscount() {
-        return Discount;
-    }
-    public int getId() {
-        return Id;
-    }
-    public double getPrice() {
-        return Price;
-    }
-    public String getCategory() {
-        return Category;
-    }
-    public String getName() {
-        return Name;
-    }
-    public void setDiscount(int discount) {
-        Discount = discount;
-    }
-    public void setPrice(int price) {
+    protected int Price;
+    protected String Name;
+    protected String Category;
+    protected int Discount;
+    protected int ID;
+    Product(int price,String name,String category,int discount ,int id)
+    {
         Price = price;
-    }
-    Product(int id, int discount, double price, String name, String category){
-        Id = id;Discount = discount;Price = price;Name = name;Category = category;
+        Name = name;
+        Category = category;
+        Discount = discount;
+        ID = id;
     }
 }
