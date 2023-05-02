@@ -1,7 +1,7 @@
 import java.util.Objects;
 import java.util.Vector;
 public class Database {
-    private Vector<registeredCustomer> RegC;
+    private Vector<Customer> RegC;
     private Vector<Order> DeliveredO;
     private Vector<Order> NDeliveredO;
     public Vector<Product> Catalog;
@@ -16,7 +16,7 @@ public class Database {
         if(!e) System.out.println("Invalid Email");
         if(!p) System.out.println("Weak Password");
         if(n && e && p){
-            registeredCustomer NewC = new registeredCustomer();
+            Customer NewC = new Customer();
             NewC.setPassword(Pass);
             NewC.setAddress(Add);
             NewC.setEmail(Email);
@@ -37,7 +37,7 @@ public class Database {
         }
     }
     public boolean ValidateAcc(String Email, String Pass){
-        for (registeredCustomer RC : RegC) {
+        for (Customer RC : RegC) {
             if (RC.getEmail().equals(Email) && RC.getPassword().equals(Pass)) return true;
         }
         System.out.println("Invalid Account");
@@ -45,7 +45,7 @@ public class Database {
     }
     public void SavePassword(String Email, String NPass){
         int changed = 0;
-        for (registeredCustomer RC : RegC) {
+        for (Customer RC : RegC) {
             if (RC.getEmail().equals(Email)){
                 RC.setPassword(NPass);
                 changed = 1;
