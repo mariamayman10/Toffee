@@ -1,10 +1,10 @@
 public class Product {
-    protected int Price;
+    protected double Price;
     protected String Name;
     protected String Category;
-    protected int Discount;
+    protected double Discount;
     protected int ID;
-    Product(int price,String name,String category,int discount ,int id)
+    Product(double price,String name,String category,double discount ,int id)
     {
         Price = price;
         Name = name;
@@ -12,4 +12,17 @@ public class Product {
         Discount = discount;
         ID = id;
     }
+    public String getName(){
+        return Name;
+    }
+    public String getCategory(){
+        return Category;
+    }
+    public double getPrice (){
+        return Price;
+    }
+    public double getDiscount (){
+        return Discount;
+    }
+    
 }
