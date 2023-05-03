@@ -13,4 +13,7 @@ public class Cart {
             cart.put(product,quantity);
         }
     }
+    public void clearCart() {
+        cart.clear();
+    }
 }
