@@ -5,7 +5,7 @@ public class Customer{
     protected String Password;
     protected String Address;
     protected int Points;
-    protected Vector<Order>ordersMade;
+    protected Vector<Order>ordersMade = new Vector<Order>();
     protected Cart custCart;
     public String getEmail(){
         return Email;
@@ -25,13 +25,23 @@ public class Customer{
     }
 
     public void setPassword(String password) {
-         Password = password;
+        Password = password;
     }
     public void setAddress(String address ) {
-         Address = address;
+        Address = address;
     }
     public void setPoints(int points) {
         Points = points;
+    }
+    public Customer(Customer other) {
+        Email = other.Email;
+        Password = other.Password;
+        Address = other.Address;
+        Points = other.Points;
+        ordersMade = other.ordersMade;
+        custCart = other.custCart;
+    }
+    public Customer(){
     }
     private void Payment()
     {
@@ -52,7 +62,7 @@ public class Customer{
         order.setTotalPrice(in.nextDouble());
         database.SaveOrder(order);
         ordersMade.add(order);
-        custCart.clear();
+        custCart.clearCart();
         System.out.println("Done.");
     }
 }
