@@ -6,11 +6,10 @@ public class Customer{
     protected String Address;
     protected int Points;
     protected Vector<Order>ordersMade = new Vector<Order>();
-    protected Cart custCart;
+    public Cart custCart = new Cart();
     public String getEmail(){
         return Email;
     }
-
     public String getPassword() {
         return Password;
     }
@@ -43,15 +42,12 @@ public class Customer{
     }
     public Customer(){
     }
-    private void Payment()
+    public void Checkout()
     {
         Order order = new Order();
         Database database = new Database();
         Scanner in = new Scanner(System.in);
-        System.out.println("Enter the ID of the order you want to pay :");
-        order.setID(in.nextInt()-1);
-        System.out.println("Enter the status of the order you want to pay :");
-        order.setStatus(in.next());
+        order.setStatus("Not Delivered");
         System.out.println("Enter the delivery date of the order you want to pay :");
         order.setDDate(in.next());
         System.out.println("Enter the order date of the order you want to pay :");
@@ -66,3 +62,7 @@ public class Customer{
         System.out.println("Done.");
     }
 }
+//total price in check out
+//update available quantity
+//files - -
+//       _
