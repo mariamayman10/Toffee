@@ -1,28 +1,27 @@
 import java.util.Objects;
 import java.util.Vector;
 public class Database {
-    private Vector<Customer> RegC;
-    private Vector<Order> DeliveredO;
-    private Vector<Order> NDeliveredO;
-    public Vector<Product> Catalog;
+    private static Vector<Customer> RegC =  new Vector<Customer>();
+    private Vector<Order> DeliveredO = new Vector<Order>();
+    private Vector<Order> NDeliveredO = new Vector<Order>();
     public boolean Validate(String Name, String Email, String Pass, String Add){
         String NameR = "^[a-zA-Z\\s]+$";
         boolean n = Name.matches(NameR);
         String EmailR = "^[\\w-.]+@gmail\\.com$";
         boolean e = Email.matches(EmailR);
-        String PassR = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
-        boolean p = Pass.matches(PassR);
+        //String PassR = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
+        //boolean p = Pass.matches(PassR);
         if(!n) System.out.println("Invalid Name");
         if(!e) System.out.println("Invalid Email");
-        if(!p) System.out.println("Weak Password");
-        if(n && e && p){
+        //if(!p) System.out.println("Weak Password");
+        if(n && e){
             Customer NewC = new Customer();
             NewC.setPassword(Pass);
             NewC.setAddress(Add);
             NewC.setEmail(Email);
             RegC.add(NewC);
         }
-        return n && e && p;
+        return n && e ;
     }
     public void SaveOrder(Order order){
         NDeliveredO.add(order);
@@ -36,12 +35,15 @@ public class Database {
             }
         }
     }
-    public boolean ValidateAcc(String Email, String Pass){
+    public Customer ValidateAcc(String Email, String Pass){
         for (Customer RC : RegC) {
-            if (RC.getEmail().equals(Email) && RC.getPassword().equals(Pass)) return true;
+            if (RC.getEmail().equals(Email) && RC.getPassword().equals(Pass)){
+                return RC;
+            }
         }
         System.out.println("Invalid Account");
-        return false;
+        Customer cust = new Customer();
+        return cust;
     }
     public void SavePassword(String Email, String NPass){
         int changed = 0;
@@ -52,5 +54,9 @@ public class Database {
             }
         }
         if(changed == 0) System.out.println("There is no such an email to change password");
+    }
+    public Vector<Product> getCatalog(){
+        Catalog catalog = new Catalog();
+        return catalog.catalog;
     }
 }
