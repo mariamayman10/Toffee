@@ -9,19 +9,19 @@ public class Database {
         boolean n = Name.matches(NameR);
         String EmailR = "^[\\w-.]+@gmail\\.com$";
         boolean e = Email.matches(EmailR);
-        //String PassR = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
-        //boolean p = Pass.matches(PassR);
+        String PassR = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
+        boolean p = Pass.matches(PassR);
         if(!n) System.out.println("Invalid Name");
         if(!e) System.out.println("Invalid Email");
-        //if(!p) System.out.println("Weak Password");
-        if(n && e){
+        if(!p) System.out.println("Weak Password");
+        if(n && e && p){
             Customer NewC = new Customer();
             NewC.setPassword(Pass);
             NewC.setAddress(Add);
             NewC.setEmail(Email);
             RegC.add(NewC);
         }
-        return n && e ;
+        return n && e && p;
     }
     public void SaveOrder(Order order){
         NDeliveredO.add(order);
@@ -42,8 +42,7 @@ public class Database {
             }
         }
         System.out.println("Invalid Account");
-        Customer cust = new Customer();
-        return cust;
+        return null;
     }
     public void SavePassword(String Email, String NPass){
         int changed = 0;
@@ -58,5 +57,13 @@ public class Database {
     public Vector<Product> getCatalog(){
         Catalog catalog = new Catalog();
         return catalog.catalog;
+    }
+    public Product SearchforProduct(int productId){
+        for (int i = 0;i < getCatalog().size();i++){
+            if(getCatalog().get(i).ID == productId){
+                return getCatalog().get(i);
+            }
+        }
+        return null;
     }
 }
