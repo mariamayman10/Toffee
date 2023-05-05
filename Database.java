@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Vector;
 public class Database {
     private static final Vector<Customer> RegC =  new Vector<>();
@@ -23,7 +24,37 @@ public class Database {
         return n && e && p;
     }
     public void SaveOrder(Order order){
+        boolean IDSet = false;
+        while(!IDSet){
+            Random random = new Random();
+            int OrderId = random.nextInt(100);
+            for (Order O:NDeliveredO){
+                if(OrderId == O.getID()){
+                    break;
+                }
+            }
+            for (Order O:DeliveredO){
+                if(OrderId == O.getID()){
+                    break;
+                }
+            }
+            order.setID(OrderId);
+            IDSet = true;
+        }
         NDeliveredO.add(order);
+        System.out.println("Your Order is Placed Successfully With ID " + order.getID());
+    }
+    public boolean Update_catalog(Product P, int Q){
+        for (Product product : getCatalog()) {
+            if(product.getID() == P.getID()){
+                if(product.getQuantity() - Q < 0){
+                    return false;
+                }
+                product.setQuantity(product.getQuantity() - Q);
+                break;
+            }
+        }
+        return true;
     }
     public void RemoveOrder(String Date){
         for (int i = 0;i < NDeliveredO.size();i++){
@@ -58,7 +89,7 @@ public class Database {
     }
     public Product SearchforProduct(int productId){
         for (int i = 0;i < getCatalog().size();i++){
-            if(getCatalog().get(i).ID == productId){
+            if(getCatalog().get(i).getID() == productId){
                 return getCatalog().get(i);
             }
         }
