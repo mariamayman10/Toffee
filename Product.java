@@ -1,10 +1,10 @@
 public class Product {
-    protected double Price;
-    protected String Name;
-    protected String Category;
-    protected double Discount;
-    protected int ID;
-    protected int Quantity;
+    private double Price;
+    private String Name;
+    private String Category;
+    private double Discount;
+    private int ID;
+    private int Quantity;
     Product(double price,String name,String category,double discount ,int id,int Q)
     {
         Price = price;
@@ -34,7 +34,14 @@ public class Product {
     public double getDiscount (){
         return Discount;
     }
+    public int getID (){
+        return ID;
+    }
+    public int getQuantity (){
+        return Quantity;
+    }
 
-
-
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
+    }
 }
