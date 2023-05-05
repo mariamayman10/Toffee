@@ -24,23 +24,25 @@ public class MySystem {
                 customer.custCart.addItem(Product, Quantity);
                 customer.custCart.viewCart();
             } else if (choice == 3) customer.Checkout();
-            else ShowMenu();
+            else break;
         }
     }
     public void ShowMenu(){
-        System.out.println("Go to: 1)SignUp 2)Login 3)View Products 4)Exit");
-        int choice = in.nextInt();
-        while (choice != 1 && choice != 2 && choice != 3 && choice != 4){
-            System.out.println("Please Choose Either 1, 2 , 3 or 4");
-            choice = in.nextInt();
+        while(true){
+            System.out.println("Go to: 1)SignUp 2)Login 3)View Products 4)Exit");
+            int choice = in.nextInt();
+            while (choice != 1 && choice != 2 && choice != 3 && choice != 4){
+                System.out.println("Please Choose Either 1, 2 , 3 or 4");
+                choice = in.nextInt();
+            }
+            if(choice == 1)ShowSignUp();
+            else if(choice == 2)ShowLogIn();
+            else if(choice == 3) {
+                ShowCatalog();
+                ShowMenu();
+            }
+            else System.exit(0);
         }
-        if(choice == 1)ShowSignUp();
-        else if(choice == 2)ShowLogIn();
-        else if(choice == 3) {
-            ShowCatalog();
-            ShowMenu();
-        }
-        else System.exit(0);
     }
     public void ShowSignUp(){
         System.out.println("____SIGN UP____");
@@ -72,8 +74,7 @@ public class MySystem {
         String Email = in.next();
         System.out.print("\nEnter Your Password: ");
         String Pass = in.next();
-        Customer customer = new Customer();
-        customer = DB.ValidateAcc(Email, Pass);
+        Customer customer = DB.ValidateAcc(Email, Pass);
         while(customer == null){
             Failure();
             System.out.println("ForgotPassword?");
@@ -84,7 +85,6 @@ public class MySystem {
                 System.out.print("\nEnter Your New Password: ");
                 String NPass = in.next();
                 DB.SavePassword(Email, NPass);
-                customer = DB.ValidateAcc(Email, Pass);
             }
             else{
                 System.out.println("____LOG IN____");
@@ -92,8 +92,8 @@ public class MySystem {
                 Email = in.next();
                 System.out.print("\nEnter Your Password: ");
                 Pass = in.next();
-                customer = DB.ValidateAcc(Email, Pass);
             }
+            customer = DB.ValidateAcc(Email, Pass);
         }
         LoggedIn(customer);
     }
