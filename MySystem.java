@@ -16,14 +16,20 @@ public class MySystem {
             }
             if (choice == 1) ShowCatalog();
             else if (choice == 2) {
-                System.out.println("Please Enter the id of the product: ");
+                System.out.println("Please Enter the number of the product: ");
                 int Pid = in.nextInt();
                 System.out.println("Please Enter the quantity of the product: ");
-                Integer Quantity = in.nextInt();
+                int Quantity = in.nextInt();
                 Product Product = new Product(DB.SearchforProduct(Pid));
-                customer.custCart.addItem(Product, Quantity);
-                customer.custCart.viewCart();
-            } else if (choice == 3) customer.Checkout();
+                if(DB.Update_catalog(Product, Quantity)){
+                    customer.custCart.addItem(Product, Quantity);
+                }
+                else{
+                    System.out.println("No enough Quantity");
+                }
+            } else if (choice == 3) {
+                DB.SaveOrder(customer.Checkout());
+            }
             else break;
         }
     }
@@ -100,6 +106,7 @@ public class MySystem {
     public void ShowCatalog(){
         for(int i =0;i< DB.getCatalog().size();i++){
             Product P =new Product(DB.getCatalog().get(i));
+            System.out.println("Product Number: " + (i+1));
             System.out.print("Product Name: ");
             System.out.print(P.getName());
             System.out.print("\nProduct Category: ");
