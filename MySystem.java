@@ -24,7 +24,7 @@ public class MySystem {
                 customer.custCart.addItem(Product, Quantity);
                 customer.custCart.viewCart();
             } else if (choice == 3) customer.Checkout();
-            else System.exit(0);
+            else ShowMenu();
         }
     }
     public void ShowMenu(){
@@ -36,7 +36,10 @@ public class MySystem {
         }
         if(choice == 1)ShowSignUp();
         else if(choice == 2)ShowLogIn();
-        else if(choice == 3) ShowCatalog();
+        else if(choice == 3) {
+            ShowCatalog();
+            ShowMenu();
+        }
         else System.exit(0);
     }
     public void ShowSignUp(){
