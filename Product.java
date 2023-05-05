@@ -5,7 +5,6 @@ public class Product {
     protected double Discount;
     protected int ID;
     protected int Quantity;
-    Product(){}
     Product(double price,String name,String category,double discount ,int id,int Q)
     {
         Price = price;
@@ -35,9 +34,7 @@ public class Product {
     public double getDiscount (){
         return Discount;
     }
-    public int getQuantity(){
-        return Quantity;
-    }
+
 
 
 }
