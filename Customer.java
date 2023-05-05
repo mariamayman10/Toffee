@@ -5,7 +5,7 @@ public class Customer{
     protected String Password;
     protected String Address;
     protected int Points;
-    protected Vector<Order>ordersMade = new Vector<Order>();
+    protected Vector<Order>ordersMade = new Vector<>();
     public Cart custCart = new Cart();
     public String getEmail(){
         return Email;
@@ -28,9 +28,6 @@ public class Customer{
     }
     public void setAddress(String address ) {
         Address = address;
-    }
-    public void setPoints(int points) {
-        Points = points;
     }
     public Customer(Customer other) {
         Email = other.Email;
@@ -64,5 +61,3 @@ public class Customer{
 }
 //total price in check out
 //update available quantity
-//files - -
-//       _
