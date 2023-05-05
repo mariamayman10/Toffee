@@ -1,10 +1,8 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Cart {
-    Scanner in = new Scanner(System.in);
-    private static Map<Product,Integer> cart = new HashMap<Product,Integer>();
+    private static Map<Product,Integer> cart = new HashMap<>();
     public void addItem(Product product, Integer quantity) {
         cart.put(product,quantity);
     }
