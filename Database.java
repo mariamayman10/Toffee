@@ -1,9 +1,8 @@
-import java.util.Objects;
 import java.util.Vector;
 public class Database {
-    private static Vector<Customer> RegC =  new Vector<Customer>();
-    private Vector<Order> DeliveredO = new Vector<Order>();
-    private Vector<Order> NDeliveredO = new Vector<Order>();
+    private static final Vector<Customer> RegC =  new Vector<>();
+    private final Vector<Order> DeliveredO = new Vector<>();
+    private final Vector<Order> NDeliveredO = new Vector<>();
     public boolean Validate(String Name, String Email, String Pass, String Add){
         String NameR = "^[a-zA-Z\\s]+$";
         boolean n = Name.matches(NameR);
@@ -55,8 +54,7 @@ public class Database {
         if(changed == 0) System.out.println("There is no such an email to change password");
     }
     public Vector<Product> getCatalog(){
-        Catalog catalog = new Catalog();
-        return catalog.catalog;
+        return Catalog.catalog;
     }
     public Product SearchforProduct(int productId){
         for (int i = 0;i < getCatalog().size();i++){
