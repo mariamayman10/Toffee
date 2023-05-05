@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Vector;
 public class Customer{
@@ -12,12 +14,6 @@ public class Customer{
     }
     public String getPassword() {
         return Password;
-    }
-    public String getAddress() {
-        return Address;
-    }
-    public int getPoints() {
-        return Points;
     }
     public void setEmail(String email){
         Email = email;
@@ -37,13 +33,13 @@ public class Customer{
         ordersMade = other.ordersMade;
         custCart = other.custCart;
     }
-    public Customer(){
-    }
+    public Customer(){}
     public void Checkout()
     {
         Order order = new Order();
         Database database = new Database();
         Scanner in = new Scanner(System.in);
+        order.setOProducts(Cart.getCart());
         order.setStatus("Not Delivered");
         System.out.println("Enter the delivery date of the order you want to pay :");
         order.setDDate(in.next());
@@ -51,13 +47,10 @@ public class Customer{
         order.setDate(in.next());
         System.out.println("Enter the payment method of the order you want to pay :");
         order.setPaymentMethod(in.next());
-        System.out.println("Enter the total price of the order you want to pay :");
-        order.setTotalPrice(in.nextDouble());
+        System.out.println("The total price of Your Order: " + order.getTotalPrice());
         database.SaveOrder(order);
         ordersMade.add(order);
         custCart.clearCart();
         System.out.println("Done.");
     }
 }
-//total price in check out
-//update available quantity
