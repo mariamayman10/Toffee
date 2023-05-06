@@ -20,12 +20,10 @@ public class MySystem {
                 int Pid = in.nextInt();
                 System.out.println("Please Enter the quantity of the product: ");
                 int Quantity = in.nextInt();
-                Product Product = new Product(DB.SearchforProduct(Pid));
-                if(DB.Update_catalog(Product, Quantity)){
-                    customer.custCart.addItem(Product, Quantity);
-                }
-                else{
-                    System.out.println("No enough Quantity");
+                if(DB.SearchforProduct(Pid) == null) System.out.println("There is no Such a Product");
+                else {
+                    Product Product = new Product(DB.SearchforProduct(Pid));
+                    if (DB.Update_catalog(Product, Quantity)) customer.custCart.addItem(Product, Quantity);
                 }
             } else if (choice == 3) {
                 DB.SaveOrder(customer.Checkout());
@@ -52,8 +50,9 @@ public class MySystem {
     }
     public void ShowSignUp(){
         System.out.println("____SIGN UP____");
+        in.nextLine();
         System.out.print("Enter Your Name: ");
-        String Name = in.next();
+        String Name = in.nextLine();
         System.out.print("\nEnter Your Email: ");
         String Email = in.next();
         System.out.print("\nEnter Your Password: ");
