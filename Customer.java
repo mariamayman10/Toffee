@@ -36,21 +36,40 @@ public class Customer{
     public Customer(){}
     public Order Checkout()
     {
-        Order order = new Order();
-        Scanner in = new Scanner(System.in);
-        order.setOProducts(custCart.getCart());
-        order.setTotalPrice(0);
-        System.out.println("Your Order Contains: ");
-        custCart.viewCart();
-        order.setStatus("Not Delivered");
-        System.out.println("Enter the delivery date of the order:");
-        order.setDDate(in.next());
-        System.out.println("Enter the payment method of the order you want to pay:");
-        order.setPaymentMethod(in.next());
-        System.out.println("The total price of Your Order: " + order.getTotalPrice());
-        ordersMade.add(order);
-        custCart.clearCart();
-        System.out.println("Done.");
-        return order;
+        if(!custCart.getCart().isEmpty()){
+            Order order = new Order();
+            Scanner in = new Scanner(System.in);
+            order.setOProducts(custCart.getCart());
+            order.setTotalPrice(0);
+            System.out.println("Your Order Contains: ");
+            custCart.viewCart();
+            order.setStatus("Not Delivered");
+            System.out.println("Enter the delivery date of the order:");
+            String DDate = in.next();
+            String regex = "\\b(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)\\b";
+            boolean ValidD = DDate.matches(regex);
+            while(!ValidD){
+                DDate = in.next();
+                ValidD = DDate.matches(regex);
+            }
+            order.setDDate(in.next());
+            while(true){
+                System.out.println("Enter the Payment Method of the order you want to pay:");
+                if(in.next().equalsIgnoreCase("cash")){
+                    order.setPaymentMethod(in.next());
+                    break;
+                }
+                else System.out.println("Please Choose Either Cash or Online..Enter the payment method of the order you want to pay:");
+            }
+            System.out.println("The Total Price of Your Order: " + order.getTotalPrice());
+            ordersMade.add(order);
+            custCart.clearCart();
+            System.out.println("Done.");
+            return order;
+        }
+        else{
+            System.out.println("Your Cart is Empty");
+            return null;
+        }
     }
 }
