@@ -24,30 +24,33 @@ public class Database {
         return n && e && p;
     }
     public void SaveOrder(Order order){
-        boolean IDSet = false;
-        while(!IDSet){
-            Random random = new Random();
-            int OrderId = random.nextInt(100);
-            for (Order O:NDeliveredO){
-                if(OrderId == O.getID()){
-                    break;
+        if(order != null){
+            boolean IDSet = false;
+            while(!IDSet){
+                Random random = new Random();
+                int OrderId = random.nextInt(100);
+                for (Order O:NDeliveredO){
+                    if(OrderId == O.getID()){
+                        break;
+                    }
                 }
-            }
-            for (Order O:DeliveredO){
-                if(OrderId == O.getID()){
-                    break;
+                for (Order O:DeliveredO){
+                    if(OrderId == O.getID()){
+                        break;
+                    }
                 }
+                order.setID(OrderId);
+                IDSet = true;
             }
-            order.setID(OrderId);
-            IDSet = true;
+            NDeliveredO.add(order);
+            System.out.println("Your Order is Placed Successfully With ID " + order.getID());
         }
-        NDeliveredO.add(order);
-        System.out.println("Your Order is Placed Successfully With ID " + order.getID());
     }
     public boolean Update_catalog(Product P, int Q){
         for (Product product : getCatalog()) {
             if(product.getID() == P.getID()){
                 if(product.getQuantity() - Q < 0){
+                    System.out.print("No enough Quantity..Only " + product.getQuantity() + " items of this product is valid");
                     return false;
                 }
                 product.setQuantity(product.getQuantity() - Q);
