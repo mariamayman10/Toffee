@@ -1,10 +1,5 @@
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Vector;
-import java.io.FileWriter;
+import java.io.*;
+import java.util.*;
 
 public class Database {
     private final Vector<Order> deliveredO = new Vector<>();
@@ -28,7 +23,16 @@ public class Database {
         boolean p = Pass.matches(passR);
         if(!n) System.out.println("Invalid Name");
         if(!e) System.out.println("Invalid Email");
-        if(!p) System.out.println("Weak Password");
+        if(!p) {
+            System.out.println("Weak Password");
+            System.out.println("""
+                            Password Should have:\s
+                            1-At Least an Uppercase Letter
+                            2-At least an Lowercase Letter
+                            3-At Least one Digit
+                            4-Length be 8 or More
+                            5-No Special Characters""");
+        }
         if(n && e && p){
             Customer newC = new Customer();
             newC.setPassword(Pass);
@@ -147,27 +151,39 @@ public class Database {
      */
     public void savePassword(String Email, String NPass){
         int changed = 0;
-        try{
-            Scanner sc = new Scanner(new File("C:\\Users\\DELL 5480\\IdeaProjects\\untitled\\Test.csv"));
-            //parsing a CSV file into the constructor of Scanner class
-            sc.useDelimiter(",");
-            //setting comma as delimiter pattern
-
-            while (sc.hasNext()) {
-                String email , pass;
-                email = sc.next();
-                pass = sc.next();
-                if (Objects.equals(email, Email)){
-                    pass = NPass;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("Test.csv"));
+            List<String> lines = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (Email.equals(parts[0])) {
+                    line = "";
+                    for (int i = 0; i < parts.length; i++) {
+                        if(i == 1){
+                            line += NPass;
+                        }
+                        else{
+                            line += parts[i];
+                        }
+                        if(i != parts.length-1) line += ",";
+                    }
+                    lines.add(line);
                     changed = 1;
+                } else {
+                    lines.add(line);
                 }
             }
-            sc.close();
-        }catch(IOException e){
-            System.out.println("An error occurred while reading the CSV file: " + e.getMessage());
-            e.printStackTrace();
-        }
+            reader.close();
 
+            PrintWriter writer = new PrintWriter(new FileWriter("Test.csv", false));
+            for (String newLine : lines) {
+                writer.println(newLine);
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
+        }
         if(changed == 0) System.out.println("There is no such an email to change password");
     }
 
