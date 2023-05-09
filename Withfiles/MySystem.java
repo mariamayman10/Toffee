@@ -107,7 +107,23 @@ public class MySystem {
                 Email = in.next();
                 System.out.print("\nEnter Your New Password: ");
                 String NPass = in.next();
+                String passR = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
+                boolean p = NPass.matches(passR);
+                while(!p){
+                    System.out.println("Weak Password");
+                    System.out.println("""
+                            Password Should have:\s
+                            1-At Least an Uppercase Letter
+                            2-At least an Lowercase Letter
+                            3-At Least one Digit
+                            4-Length be 8 or More
+                            5-No Special Characters""");
+                    System.out.print("\nEnter Your New Password: ");
+                    NPass = in.next();
+                    p = NPass.matches(passR);
+                }
                 DB.savePassword(Email, NPass);
+                Pass = NPass;
             }
             else{
                 System.out.println("____LOG IN____");
