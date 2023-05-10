@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Database {
+    Scanner in = new Scanner(System.in);
     private final Vector<Order> deliveredO = new Vector<>();
     private final Vector<Order> NDeliveredO = new Vector<>();
 
@@ -14,7 +15,7 @@ public class Database {
      * @return
      * @throws IOException
      */
-    public boolean Validate(String Name, String Email, String Pass, String Add) throws IOException {
+    public boolean Validate(String Name, String Email, String Pass, String Add) throws IOException, InterruptedException {
         String nameR = "^[a-zA-Z\\s]+$";
         boolean n = Name.matches(nameR);
         String emailR = "^[\\w-.]+@gmail\\.com$";
@@ -38,10 +39,29 @@ public class Database {
             newC.setPassword(Pass);
             newC.setAddress(Add);
             newC.setEmail(Email);
-            FileWriter writer = new FileWriter("Test.csv", true);
-            writer.write(newC.getEmail() + ','+newC.getPassword() + "\n\r");
-            writer.flush();
-            writer.close();
+            Random random = new Random();
+            int OTP = random.nextInt(1000, 5000);
+            String S_otp = Integer.toString(OTP);
+            String backspace = "";
+            System.out.println("This is the sent OTP..Remember it..Will disappear after 2 seconds");
+            for (int i = 0; i < S_otp.length(); i++) {
+                backspace += "\b";
+            }
+            System.out.print(S_otp);
+            Thread.sleep(2000);
+            System.out.print(backspace);
+            System.out.println("Enter the received OTP: ");
+            int otp = in.nextInt();
+            if(otp == OTP){
+                FileWriter writer = new FileWriter("Test.csv", true);
+                writer.write(newC.getEmail() + ','+newC.getPassword() + "\n\r");
+                writer.flush();
+                writer.close();
+                System.out.println("\nAccount Saved Successfully");
+            }
+            else{
+                System.out.println("\nInvalid OTP..Can't Register the Account");
+            }
         }
         return n && e && p;
     }
