@@ -15,7 +15,7 @@ public class Database {
      * @return
      * @throws IOException
      */
-    public boolean Validate(String Name, String Email, String Pass, String Add) throws IOException, InterruptedException {
+    public boolean Validate(String Name, String Email, String Pass, String Add) throws IOException{
         String nameR = "^[a-zA-Z\\s]+$";
         boolean n = Name.matches(nameR);
         String emailR = "^[\\w-.]+@gmail\\.com$";
@@ -40,19 +40,13 @@ public class Database {
             newC.setAddress(Add);
             newC.setEmail(Email);
             Random random = new Random();
-            int OTP = random.nextInt(1000, 5000);
-            String S_otp = Integer.toString(OTP);
-            String backspace = "";
-            System.out.println("This is the sent OTP..Remember it..Will disappear after 2 seconds");
-            for (int i = 0; i < S_otp.length(); i++) {
-                backspace += "\b";
-            }
-            System.out.print(S_otp);
-            Thread.sleep(2000);
-            System.out.print(backspace);
-            System.out.println("Enter the received OTP: ");
-            int otp = in.nextInt();
-            if(otp == OTP){
+            int otpCode = random.nextInt(100,999);
+            String S_otpCode = Integer.toString(otpCode);
+            OTP sendotp = new OTP();
+            sendotp.sendOTPEmail(Email, S_otpCode);
+            System.out.print("Enter the OTP code you received: ");
+            int entered_OTP = in.nextInt();
+            if(entered_OTP == otpCode){
                 FileWriter writer = new FileWriter("Test.csv", true);
                 writer.write(newC.getEmail() + ','+newC.getPassword() + "\n\r");
                 writer.flush();
