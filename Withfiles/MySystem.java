@@ -44,7 +44,7 @@ public class MySystem {
      *
      * @throws IOException
      */
-    public void showMenu() throws IOException, InterruptedException {
+    public void showMenu() throws IOException{
         while(true){
             System.out.println("Go to: 1)SignUp 2)Login 3)View Products 4)Exit");
             int choice = in.nextInt();
@@ -66,7 +66,7 @@ public class MySystem {
      *
      * @throws IOException
      */
-    public void showSignUp() throws IOException, InterruptedException {
+    public void showSignUp() throws IOException{
         System.out.println("____SIGN UP____");
         in.nextLine();
         System.out.print("Enter Your Name: ");
