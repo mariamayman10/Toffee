@@ -13,6 +13,8 @@ public class Database {
      * @return
      * @throws IOException
      */
+    //OTP Sending Operation doesn't work on all laptops due to settings changes.
+    //It may be fixed if Hotspot is used instead of Wi-Fi
     public boolean Validate(String Name, String Email, String Pass, String Add) throws IOException{
         String nameR = "^[a-zA-Z\\s]+$";
         boolean n = Name.matches(nameR);
@@ -94,14 +96,14 @@ public class Database {
                     e.printStackTrace();
                 }
             }
+            String line = order.getID() + "," + order.getDDate() + "," + order.getPMethod() +
+                    "," + order.getTotalPrice();
+            FileWriter writer = new FileWriter("NDeliveredOrders.csv", true);
+            writer.write(line + "\n");
+            writer.flush();
+            writer.close();
+            System.out.println("Your Order is Placed Successfully With ID " + order.getID() + '\n');
         }
-        String line = order.getID() + "," + order.getDDate() + "," + order.getPMethod() +
-                "," + order.getTotalPrice();
-        FileWriter writer = new FileWriter("NDeliveredOrders.csv", true);
-        writer.write(line + "\n");
-        writer.flush();
-        writer.close();
-        System.out.println("Your Order is Placed Successfully With ID " + order.getID() + '\n');
     }
 
     /**
@@ -142,25 +144,25 @@ public class Database {
                 if (fields[1].equals(Date)) {
                     deliveredOrders += line + "\n";
                     try{
-                    BufferedReader reader1 = new BufferedReader(new FileReader("NDeliveredOrders.csv"));
-                    List<String> lines = new ArrayList<>();
-                    String line2;
-                    while ((line2 = reader1.readLine()) != null) {
-                        if (line.equals(line2)) {
-                            continue;
-                        } else {
-                            lines.add(line2);
+                        BufferedReader reader1 = new BufferedReader(new FileReader("NDeliveredOrders.csv"));
+                        List<String> lines = new ArrayList<>();
+                        String line2;
+                        while ((line2 = reader1.readLine()) != null) {
+                            if (line.equals(line2)) {
+                                continue;
+                            } else {
+                                lines.add(line2);
+                            }
                         }
+                        reader1.close();
+                        PrintWriter writer = new PrintWriter(new FileWriter("NDeliveredOrders.csv", false));
+                        for (String newLine : lines) {
+                            writer.println(newLine);
+                        }
+                        writer.close();
+                    } catch (IOException e) {
+                        System.out.println("An error occurred while writing to the file: " + e.getMessage());
                     }
-                    reader1.close();
-                    PrintWriter writer = new PrintWriter(new FileWriter("NDeliveredOrders.csv", false));
-                    for (String newLine : lines) {
-                        writer.println(newLine);
-                    }
-                    writer.close();
-                } catch (IOException e) {
-                    System.out.println("An error occurred while writing to the file: " + e.getMessage());
-                }
                     break;
                 }
             }
@@ -224,7 +226,7 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (Email.equals(parts[0])) {
-                    StringBuilder sb = new StringBuilder(line);
+                    StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < parts.length; i++) {
                         if(i == 1){
                             sb.append(NPass);
@@ -251,6 +253,7 @@ public class Database {
             System.out.println("An error occurred while writing to the file: " + e.getMessage());
         }
         if(changed == 0) System.out.println("There is no such an email to change password");
+        else System.out.println("Password Changed Successfully");
     }
 
     /**
