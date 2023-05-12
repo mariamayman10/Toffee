@@ -12,19 +12,19 @@ public class MySystem {
      *
      * @param customer
      */
-    public void loggedIn(Customer customer){
+    public void loggedIn(Customer customer) throws IOException {
         while(true) {
             System.out.println("Want: 1)View Products 2)Add Item To Cart 3)Place Order 4)Log Out");
             int choice = in.nextInt();
             while (choice != 1 && choice != 2 && choice != 3 && choice != 4) {
-                System.out.println("Please Choose Either 1, 2 , 3 or 4");
+                System.out.print("Please Choose Either 1, 2 , 3 or 4: ");
                 choice = in.nextInt();
             }
             if (choice == 1) showCatalog();
             else if (choice == 2) {
-                System.out.println("Please Enter the number of the product: ");
+                System.out.print("Please Enter the number of the product: ");
                 int Pid = in.nextInt();
-                System.out.println("Please Enter the quantity of the product: ");
+                System.out.print("Please Enter the quantity of the product: ");
                 int Quantity = in.nextInt();
                 if(DB.searchForProduct(Pid) == null) System.out.println("There is no Such a Product");
                 else {
@@ -61,7 +61,6 @@ public class MySystem {
             else System.exit(0);
         }
     }
-
     /**
      *
      * @throws IOException
@@ -91,7 +90,7 @@ public class MySystem {
         }
         showMenu();
     }
-    public void showLogIn(){
+    public void showLogIn() throws IOException {
         System.out.println("____LOG IN____");
         System.out.print("\nEnter Your Email: ");
         String Email = in.next();
