@@ -3,8 +3,6 @@ import java.util.*;
 
 public class Database {
     Scanner in = new Scanner(System.in);
-    private final Vector<Order> deliveredO = new Vector<>();
-    private final Vector<Order> NDeliveredO = new Vector<>();
 
     /**
      *
@@ -45,9 +43,9 @@ public class Database {
             OTP sendotp = new OTP();
             sendotp.sendOTPEmail(Email, S_otpCode);
             System.out.print("Enter the OTP code you received: ");
-            int entered_OTP = in.nextInt();
-            if(entered_OTP == otpCode){
-                FileWriter writer = new FileWriter("Test.csv", true);
+            String entered_OTP = in.next();
+            if(entered_OTP.equals(S_otpCode)){
+                FileWriter writer = new FileWriter("Accounts-Carts.csv", true);
                 writer.write(newC.getEmail() + ','+newC.getPassword() + "\n\r");
                 writer.flush();
                 writer.close();
@@ -64,28 +62,46 @@ public class Database {
      *
      * @param order
      */
-    public void saveOrder(Order order){
+    public void saveOrder(Order order) throws IOException {
         if(order != null){
             boolean idSet = false;
             while(!idSet){
                 Random random = new Random();
-                int orderId = random.nextInt(100);
-                for (Order O:NDeliveredO){
-                    if(orderId == O.getID()){
-                        break;
+                int orderId = random.nextInt(100,999);
+                try{
+                    BufferedReader reader1 = new BufferedReader(new FileReader("NDeliveredOrders.csv"));
+                    String line1;
+                    while ((line1 = reader1.readLine()) != null) {
+                        String[] values = line1.split(",");
+                        if (Integer.toString(order.getID()).equals(values[0])) {
+                            break;
+                        }
                     }
-                }
-                for (Order O: deliveredO){
-                    if(orderId == O.getID()){
-                        break;
+                    reader1.close();
+                    BufferedReader reader2 = new BufferedReader(new FileReader("DeliveredOrders.csv"));
+                    String line2;
+                    while ((line2 = reader2.readLine()) != null) {
+                        String[] values = line2.split(",");
+                        if (Integer.toString(order.getID()).equals(values[0])) {
+                            break;
+                        }
                     }
+                    reader2.close();
+                    idSet = true;
+                    order.setID(orderId);
+                }catch (IOException e) {
+                    System.out.println("An error occurred while reading the CSV file: " + e.getMessage());
+                    e.printStackTrace();
                 }
-                order.setID(orderId);
-                idSet = true;
             }
-            NDeliveredO.add(order);
-            System.out.println("Your Order is Placed Successfully With ID " + order.getID() + '\n');
         }
+        String line = order.getID() + "," + order.getDDate() + "," + order.getPMethod() +
+                "," + order.getTotalPrice();
+        FileWriter writer = new FileWriter("NDeliveredOrders.csv", true);
+        writer.write(line + "\n\r");
+        writer.flush();
+        writer.close();
+        System.out.println("Your Order is Placed Successfully With ID " + order.getID() + '\n');
     }
 
     /**
@@ -113,13 +129,7 @@ public class Database {
      * @param Date
      */
     public void removeOrder(String Date){
-        for (int i = 0;i < NDeliveredO.size();i++){
-            Order O = NDeliveredO.get(i);
-            if(O.getDDate().equals(Date)){
-                NDeliveredO.remove(i);
-                deliveredO.add(O);
-            }
-        }
+
     }
 
     /**
@@ -130,7 +140,7 @@ public class Database {
      */
     public Customer validateACC(String Email, String Pass){
         try{
-            Scanner sc = new Scanner(new File("Test.csv"));
+            Scanner sc = new Scanner(new File("Accounts-Carts.csv"));
             sc.useDelimiter(",|\\n");
             while (sc.hasNext()) {
                 String email = sc.next();
@@ -166,23 +176,23 @@ public class Database {
     public void savePassword(String Email, String NPass){
         int changed = 0;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("Test.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader("Accounts-Carts.csv"));
             List<String> lines = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (Email.equals(parts[0])) {
-                    line = "";
+                    StringBuilder sb = new StringBuilder(line);
                     for (int i = 0; i < parts.length; i++) {
                         if(i == 1){
-                            line += NPass;
+                            sb.append(NPass);
                         }
                         else{
-                            line += parts[i];
+                            sb.append(parts[i]);
                         }
-                        if(i != parts.length-1) line += ",";
+                        if(i != parts.length-1) sb.append(",");
                     }
-                    lines.add(line);
+                    lines.add(sb.toString());
                     changed = 1;
                 } else {
                     lines.add(line);
@@ -190,7 +200,7 @@ public class Database {
             }
             reader.close();
 
-            PrintWriter writer = new PrintWriter(new FileWriter("Test.csv", false));
+            PrintWriter writer = new PrintWriter(new FileWriter("Accounts-Carts.csv", false));
             for (String newLine : lines) {
                 writer.println(newLine);
             }
