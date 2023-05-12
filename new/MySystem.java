@@ -1,12 +1,15 @@
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.Date;
+import java.time.LocalDate;
 public class MySystem {
     Scanner in = new Scanner(System.in);
     Database DB = new Database();
     public void enterApplication() throws IOException {
+        LocalDate currentDate = LocalDate.now();
+        String Day = String.valueOf(currentDate.getDayOfMonth());
+        String Month = String.valueOf(currentDate.getMonthValue());
+        DB.removeOrder(Day + '/' + Month);
         System.out.println("_________Welcome to Toffee_________");
-        DB.removeOrder("12/6");
     }
 
     /**
@@ -123,7 +126,8 @@ public class MySystem {
                     p = NPass.matches(passR);
                 }
                 DB.savePassword(Email, NPass);
-                Pass = NPass;
+                showMenu();
+                return;
             }
             else{
                 System.out.println("____LOG IN____");
@@ -131,8 +135,8 @@ public class MySystem {
                 Email = in.next();
                 System.out.print("\nEnter Your Password: ");
                 Pass = in.next();
+                customer = DB.validateACC(Email, Pass);
             }
-            customer = DB.validateACC(Email, Pass);
         }
         loggedIn(customer);
     }
