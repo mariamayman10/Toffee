@@ -77,31 +77,30 @@ public class Customer{
             Order order = new Order();
             Scanner in = new Scanner(System.in);
             order.setOProducts(this.custCart.getCart());
-            order.setTotalPrice();
+            order.setTotalPrice(0);
             System.out.println("Your Order Contains: ");
             this.custCart.viewCart();
-            order.setStatus("Not Delivered");
-            System.out.println("Enter the delivery day of the order (1-31):");
-            int deliveryDay = in.nextInt();
-            while (deliveryDay < 1 || deliveryDay > 31) {
-                System.out.println("Invalid day. Please enter a value between 1 and 31.");
-                deliveryDay = in.nextInt();
+            System.out.print("Enter the delivery day of the order (1-31):");
+            String deliveryDay = in.next();
+            while (Integer.parseInt(deliveryDay) < 1 || Integer.parseInt(deliveryDay) > 31) {
+                System.out.print("\nInvalid day. Please enter a value between 1 and 31: ");
+                deliveryDay = in.next();
             }
-            System.out.println("Enter the delivery month of the order (1-12):");
-            int deliveryMonth = in.nextInt();
-            while (deliveryMonth < 1 || deliveryMonth > 12) {
-                System.out.println("Invalid month. Please enter a value between 1 and 12.");
-                deliveryMonth = in.nextInt();
+            System.out.print("Enter the delivery month of the order (1-12): ");
+            String deliveryMonth = in.next();
+            while (Integer.parseInt(deliveryMonth) < 1 || Integer.parseInt(deliveryMonth) > 12) {
+                System.out.print("\nInvalid month. Please enter a value between 1 and 12: ");
+                deliveryMonth = in.next();
             }
             String date= deliveryDay+"/"+deliveryMonth;
             order.setDDate(date);
-            System.out.println("Enter the payment method for the order (Online or Cash on delivery):");
+            System.out.print("Enter the payment method for the order (Online or Cash):");
             String paymentMethod = in.next();
-            if (paymentMethod.equalsIgnoreCase("Online") || paymentMethod.equalsIgnoreCase("Cash on delivery")) {
-                order.setPaymentMethod(paymentMethod);
-            }else {
-                System.out.println("Invalid payment method. Please enter either 'Online' or 'Cash on delivery'.");
+            while (!paymentMethod.equalsIgnoreCase("Online") && !paymentMethod.equalsIgnoreCase("Cash")) {
+                System.out.print("Invalid payment method. Please enter either 'Online' or 'Cash': ");
+                paymentMethod = in.next();
             }
+            order.setPaymentMethod(paymentMethod);
             System.out.println("The Total Price of Your Order: " + order.getTotalPrice());
             ordersMade.add(order);
             this.custCart.clearCart(this);
